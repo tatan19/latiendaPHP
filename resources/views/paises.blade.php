@@ -8,21 +8,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/css/bootstrap.min.css" integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <h1> Paises de la región</h1>
+    <h1 class="text-center"> Paises de la región</h1>
+    <div class="container">
     <table class="table table-striped"> 
         <thead>
+            <br>
+            <br>
             <tr>
                 <th>
-                    País
+                    <h2>País</h2>
                 </th>
                 <th>
-                    Capital
+                    <h2>Capital</h2>
                 </th>
                 <th>
-                    moneda
+                    <h2>moneda</h2>
                 </th>
                 <th>
-                    poblacion
+                    <h2>poblacion</h2>
+                </th>
+                <th>
+                    <h2>Ciudades</h2>
                 </th>
             </tr>
             </tr>
@@ -31,22 +37,30 @@
         <tbody>
             @foreach($paises as $pais => $infopais)
             <tr>
-                <td>
-                    {{$pais}}
+                <td class="text-warning" rowspan='{{ count($infopais["ciudades"]) }}'>
+                    <h2>{{$pais}}</h2>
                 </td>
-                <td>
-                    {{$infopais["capital"]}}
+                <td class="text-primary" rowspan='{{ count($infopais["ciudades"]) }}'>
+                    <h2>{{$infopais["capital"]}}</h2>
                 </td>
-                <td>
-                    {{$infopais["modeda"]}}
+                <td class="text-danger" rowspan='{{ count($infopais["ciudades"]) }}'>
+                    <h2>{{$infopais["modeda"]}}</h2>
                 </td>
-                <td>
-                    {{$infopais["poblacion"]}}
+                <td rowspan='{{ count($infopais["ciudades"]) }}'>
+                    <h2>{{$infopais["poblacion"]}}</h2>
                 </td>
-            </tr>
+                @foreach($infopais["ciudades"] as $ciudad)
+                  
+                      <td class="table-danger">
+                          <h2>{{$ciudad}}</h2>
+                      </td>
+                  </tr>
+                @endforeach
+            
             @endforeach
         </tbody>
         <tfoot></tfoot>
     </table>
+    </div>
 </body>
 </html>
