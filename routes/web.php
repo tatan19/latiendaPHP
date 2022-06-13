@@ -99,8 +99,7 @@ Route::get('paises', function(){
      //mostrar la vista de paises
 
      return view('paises')
-     ->with("paises", $paises);
-      
+     ->with("paises", $paises); 
     });
 
     Route::get('prueba', function(){
