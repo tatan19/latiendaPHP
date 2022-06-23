@@ -1,7 +1,12 @@
 @extends('layouts.menu')
 
 @section('contenido')
+@if(session('mensajito'))
+<div class="row">
+    <p> {{session('mensajito')}} </p>
 
+</div>
+@endif
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <div class="row">
@@ -19,6 +24,7 @@ enctype="multipart/form-data"
         <div class="col s8 input-field">
             <input type="text" id="nombre" name="nombre"  class="validate" placeholder="nombre de producto" >
             <label for="nombre">nombre de producto </label> 
+            <strong>{{ $errors->first('nombre') }}</strong>
         </div>
     </div> 
 
@@ -29,6 +35,7 @@ enctype="multipart/form-data"
             class="materialize-textarea"
             placeholder="Descripción de producto" ></textarea>
             <label for="desc">descripción</label>
+            <strong>{{ $errors->first('desc') }}</strong>
         </div>
         </div>
     <div class="row">
@@ -39,6 +46,7 @@ enctype="multipart/form-data"
             name="precio"
             placeholder="Precio de producto" >
             <label for="precio">Precio</label>
+            <strong>{{ $errors->first('precio') }}</strong>
         </div>
     </div>
 
@@ -52,31 +60,36 @@ enctype="multipart/form-data"
             <input type="text" class="file-path">
             </div>
         </div>
+        <strong>{{ $errors->first('imagen') }}</strong>
     </div>
 
     <div class="row">
         <div class="col s8 input-field">
             <select name="marca" id="marca">
                  @foreach($marcas as $marca)
+                 <option value="">Seleccione la marca</option>
                  <option value="{{$marca->id}}">
                     {{$marca->nombre}}
                  </option>
                  @endforeach
             </select>
             <label>Seleccione la marca</label>
+            <strong>{{ $errors->first('marca') }}</strong>
         </div>
     </div>
 
     <div class="row">
         <div class="col s8 input-field">
             <select name="categoria" id="categoria">
+                <option value="">Seleccione la categoría</option>
                  @foreach($categorias as $categoria)
                  <option  value="{{$categoria->id}}">
                     {{$categoria->nombre}}
                  </option>
                  @endforeach
             </select>
-            <label>Seleccione la categoria</label>
+            <label>Seleccione la categoría</label>
+            <strong>{{ $errors->first('categoria') }}</strong>
         </div>
     </div>
 

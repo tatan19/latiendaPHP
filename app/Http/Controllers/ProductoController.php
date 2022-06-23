@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use  App\Models\Categoria;
 use App\Models\Marca;
+//dependencia validador
+use Illuminate\Support\Facades\Validator;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 
@@ -44,11 +46,45 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //Acceder  los datos del formulario
-        //
-       // echo"<pre>";
-        //var_dump($request->imagen);
-        //echo"<pre>";
+        //validacion de datos del formulario
+
+        //1Establecer las regals de validacion a aplicar
+        //para la imput
+        $reglas = [
+            "nombre" => 'required|alpha|unique:productos,nombre',
+            "desc" => 'required|min:10|max:20',
+            "precio" => 'required|numeric',
+            "imagen" => 'required|image',
+            "categoria" => 'required',
+            "marca" => 'required',
+        ];
+
+        $mensajes=[
+            "required" => "campo obligatorio",
+            "alpha" => "solo letras",
+            "numeric" => "solo numeros",
+            "imagen" => "debe ser archivo de tipo img",
+            "min" => "minimo :min caracteres ",
+            "max" => "maximo :max caracteres "
+
+        ];
+
+        //2. Crear el objeto validador
+        $v = Validator::make($request ->all(), $reglas, $mensajes);
+
+        //3 validar
+        //fails() retorna
+        //true: se la validacion falla
+        //false si los datos son validos
+
+        if($v->fails()){
+            //validacion incorrecta
+            //mostrar la vista new
+            //llevando lor errores
+            return redirect('productos/create')
+            ->withErrors($v);
+        }else{
+        //validacion correcta
 
         //crear objeto  Uploadedfile
         $archivo = $request->imagen;
@@ -61,7 +97,7 @@ class ProductoController extends Controller
         $ruta = public_path();
         var_dump($ruta);
         $archivo->move("$ruta/img",$nombre_archivo);
-        
+
         //registrat productos a ala base de datos
         $producto = new Producto;
         $producto->nombre = $request->nombre;
@@ -71,7 +107,21 @@ class ProductoController extends Controller
         $producto->marca_id = $request->marca;
         $producto->categoria_id = $request->categoria;
         $producto->save();
-        echo "producto registrado";
+        //redireccionar al formulario y llevar mensaje
+        return redirect('productos/create')
+            ->with("mensajito", "PRODUCTO REGISATRDO");
+            
+        }
+        //die(var_dump($v->fails()));
+
+
+        //Acceder  los datos del formulario
+        //
+       // echo"<pre>";
+        //var_dump($request->imagen);
+        //echo"<pre>";
+
+        
         
     }
 
